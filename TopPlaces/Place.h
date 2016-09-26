@@ -14,6 +14,7 @@
 @property (nonatomic, readonly) NSString *country;
 @property (nonatomic, readonly) NSString *identifier;
 
--(instancetype)initWithIdentifier:(NSString *)identifier placeString:(NSString *)string;
-
+-(instancetype)init NS_UNAVAILABLE;
+-(instancetype)initWithIdentifier:(NSString *)identifier placeString:(NSString *)string NS_DESIGNATED_INITIALIZER;
+-(NSComparisonResult)compare:(Place *)otherPlace;
 @end

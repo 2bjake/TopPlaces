@@ -8,11 +8,13 @@
 
 #import "TopPlacesTableViewController.h"
 #import "FlickrFetcher.h"
+#import "Place.h"
+#import "PlacePhotosViewController.h"
 
 @interface TopPlacesTableViewController ()
 @property (strong, nonatomic) IBOutlet UIRefreshControl *spinner;
 @property (strong, nonatomic) NSArray *countries; // of NSString
-@property (strong, nonatomic) NSDictionary *countryToPlaces; // NSDictionary NSString->NSArray of NSString
+@property (strong, nonatomic) NSDictionary *countryToPlaces; // NSDictionary NSString->NSArray of Place
 @end
 
 @implementation TopPlacesTableViewController
@@ -44,14 +46,14 @@
                          [TopPlacesTableViewController countryToPlaceDictFromFlickrData:[NSData dataWithContentsOfURL:localFile]];
                    NSArray *countries = [[countryToPlaces allKeys] sortedArrayUsingSelector:@selector(compare:)];
                    dispatch_async(dispatch_get_main_queue(), ^{
-                       [self setCountries:countries andPlaceDictionary:countryToPlaces];
+                       [self setCountries:countries countryToPlaces:countryToPlaces];
                    });
                }
            }];
     [task resume];
 }
 
-- (void)setCountries:(NSArray *)countries andPlaceDictionary:(NSDictionary *)countryToPlaces {
+- (void)setCountries:(NSArray *)countries countryToPlaces:(NSDictionary *)countryToPlaces {
     self.countries = countries;
     self.countryToPlaces = countryToPlaces;
     [self.spinner endRefreshing];
@@ -66,15 +68,16 @@
     
     [places enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         NSDictionary * placeDictionary = (NSDictionary *)obj;
-        NSString *fullPlace = [placeDictionary valueForKeyPath:FLICKR_PLACE_NAME];
-        NSRange commaRange = [fullPlace rangeOfString:@", " options:NSBackwardsSearch];
-        if (commaRange.location != NSNotFound) {
-            NSString * country = [fullPlace substringFromIndex:commaRange.location + 2];
-            NSString * place = [fullPlace substringToIndex:commaRange.location];
-            if (!countryToPlaces[country]) {
-                countryToPlaces[country] = [[NSMutableArray alloc] init];
+
+        NSString *placeIdentifier = [placeDictionary valueForKeyPath:FLICKR_PLACE_ID];
+        NSString *placeString = [placeDictionary valueForKeyPath:FLICKR_PLACE_NAME];
+        Place *place = [[Place alloc] initWithIdentifier:placeIdentifier placeString:placeString];
+        
+        if (place) {
+            if (!countryToPlaces[place.country]) {
+                countryToPlaces[place.country] = [[NSMutableArray alloc] init];
             }
-            [countryToPlaces[country] addObject:place];
+            [countryToPlaces[place.country] addObject:place];
         }
     }];
     
@@ -104,17 +107,10 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Place Cell" forIndexPath:indexPath];
     NSString *country = self.countries[indexPath.section];
-    NSString *place = self.countryToPlaces[country][indexPath.row];
+    Place *place = self.countryToPlaces[country][indexPath.row];
     
-    cell.textLabel.text = place;
-    cell.detailTextLabel.text = @"";
-
-    NSRange commaRange = [place rangeOfString:@", "];
-    if (commaRange.location != NSNotFound) {
-        cell.textLabel.text = [place substringToIndex:commaRange.location];
-        cell.detailTextLabel.text = [place substringFromIndex:commaRange.location + 2];
-    }
-    
+    cell.textLabel.text = place.name;
+    cell.detailTextLabel.text = place.detail;
     return cell;
 }
 
@@ -122,14 +118,15 @@
     return self.countries[section];
 }
 
-/*
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+    if (indexPath && [segue.identifier isEqualToString:@"showPlacePhotos"] && [segue.destinationViewController isKindOfClass:[PlacePhotosViewController class]]) {
+        PlacePhotosViewController *ppvc = (PlacePhotosViewController *)segue.destinationViewController;
+        NSString *country = self.countries[indexPath.section];
+        ppvc.place = self.countryToPlaces[country][indexPath.row];
+    }
 }
-*/
 
 @end

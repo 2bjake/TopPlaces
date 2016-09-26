@@ -18,14 +18,12 @@
         _identifier = identifier;
         
         NSArray *placeParts = [string componentsSeparatedByString:DELIMINATOR];
-        if (!placeParts || placeParts.count == 0) {
+        if (!placeParts || placeParts.count < 2) {
             return nil;
         }
+
         _name = placeParts.firstObject;
-        
-        if (placeParts.count > 1) {
-            _country = placeParts.lastObject;
-        }
+        _country = placeParts.lastObject;
         
         if (placeParts.count > 2) {
             NSRange rest = NSMakeRange(1, placeParts.count - 2);
@@ -35,6 +33,10 @@
         }
     }
     return self;
+}
+
+-(NSComparisonResult)compare:(Place *)otherPlace {
+    return [self.name compare:otherPlace.name];
 }
 
 @end
