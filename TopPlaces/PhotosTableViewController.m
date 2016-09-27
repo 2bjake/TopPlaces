@@ -9,6 +9,7 @@
 #import "PhotosTableViewController.h"
 #import "PhotoInfo.h"
 #import "PhotoScrollViewController.h"
+#import "FlickrFetcher.h"
 
 NSString * const UNKNOWN = @"Unknown";
 
@@ -78,8 +79,32 @@ NSString * const UNKNOWN = @"Unknown";
     if (indexPath && [segue.identifier isEqualToString:@"showPhoto"] && [segue.destinationViewController isKindOfClass:[PhotoScrollViewController class]]) {
         PhotoScrollViewController *psvc = segue.destinationViewController;
         psvc.title = ((UITableViewCell *)sender).textLabel.text;
-        psvc.photoUrl = ((PhotoInfo *)self.photoInfos[indexPath.row]).url;
+        PhotoInfo *photoInfo = (PhotoInfo *)self.photoInfos[indexPath.row];
+        psvc.photoUrl = photoInfo.url;
+        [PhotosTableViewController addToRecentsPhotoInfo:photoInfo];
     }
+}
+
++ (void) addToRecentsPhotoInfo:(PhotoInfo *)photoInfo {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSArray *recentPhotos = [defaults objectForKey:RECENTS_KEY];
+    if (!recentPhotos) {
+        recentPhotos = [[NSArray alloc] init];
+    }
+    [defaults setObject:[recentPhotos arrayByAddingObject:photoInfo.flickrDictionary] forKey:RECENTS_KEY];
+    [defaults synchronize];
+}
+
++ (NSArray*) photoInfosFromFlickrPhotoArray:(NSArray *)photos {
+    NSMutableArray *newPhotoInfos = [[NSMutableArray alloc] init];
+    
+    for (NSDictionary * photoDict in photos) {
+        PhotoInfo *info = [[PhotoInfo alloc] initWithFlickrDictionary:photoDict];
+        if (info) {
+            [newPhotoInfos addObject:info];
+        }
+    }
+    return newPhotoInfos;
 }
 
 @end

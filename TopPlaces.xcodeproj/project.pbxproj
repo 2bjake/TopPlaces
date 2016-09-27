@@ -14,6 +14,7 @@
 		7392B3C71D994FB4007C55D2 /* PlacePhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7392B3C61D994FB4007C55D2 /* PlacePhotosViewController.m */; };
 		7392B3CA1D9954DE007C55D2 /* PhotoInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 7392B3C91D9954DE007C55D2 /* PhotoInfo.m */; };
 		7392B3CD1D9966F6007C55D2 /* PhotoScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7392B3CC1D9966F6007C55D2 /* PhotoScrollViewController.m */; };
+		7392B3D01D9AA835007C55D2 /* RecentPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7392B3CF1D9AA835007C55D2 /* RecentPhotosViewController.m */; };
 		73D088801D95AAD50087AB90 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 73D0887F1D95AAD50087AB90 /* main.m */; };
 		73D088831D95AAD50087AB90 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 73D088821D95AAD50087AB90 /* AppDelegate.m */; };
 		73D088891D95AAD50087AB90 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 73D088871D95AAD50087AB90 /* Main.storyboard */; };
@@ -37,6 +38,8 @@
 		7392B3C91D9954DE007C55D2 /* PhotoInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoInfo.m; sourceTree = "<group>"; };
 		7392B3CB1D9966F6007C55D2 /* PhotoScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoScrollViewController.h; sourceTree = "<group>"; };
 		7392B3CC1D9966F6007C55D2 /* PhotoScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoScrollViewController.m; sourceTree = "<group>"; };
+		7392B3CE1D9AA835007C55D2 /* RecentPhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentPhotosViewController.h; sourceTree = "<group>"; };
+		7392B3CF1D9AA835007C55D2 /* RecentPhotosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentPhotosViewController.m; sourceTree = "<group>"; };
 		73D0887B1D95AAD50087AB90 /* TopPlaces.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TopPlaces.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		73D0887F1D95AAD50087AB90 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		73D088811D95AAD50087AB90 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -69,6 +72,8 @@
 				7392B3C61D994FB4007C55D2 /* PlacePhotosViewController.m */,
 				7392B3CB1D9966F6007C55D2 /* PhotoScrollViewController.h */,
 				7392B3CC1D9966F6007C55D2 /* PhotoScrollViewController.m */,
+				7392B3CE1D9AA835007C55D2 /* RecentPhotosViewController.h */,
+				7392B3CF1D9AA835007C55D2 /* RecentPhotosViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -209,6 +214,7 @@
 				73D088831D95AAD50087AB90 /* AppDelegate.m in Sources */,
 				7392B3C21D994D59007C55D2 /* PhotosTableViewController.m in Sources */,
 				7392B3B81D95B747007C55D2 /* TopPlacesTableViewController.m in Sources */,
+				7392B3D01D9AA835007C55D2 /* RecentPhotosViewController.m in Sources */,
 				7392B3CA1D9954DE007C55D2 /* PhotoInfo.m in Sources */,
 				7392B3BC1D95B97B007C55D2 /* FlickrFetcher.m in Sources */,
 				7392B3CD1D9966F6007C55D2 /* PhotoScrollViewController.m in Sources */,

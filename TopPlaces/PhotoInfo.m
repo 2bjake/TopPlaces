@@ -7,22 +7,36 @@
 //
 
 #import "PhotoInfo.h"
+#import "FlickrFetcher.h"
 
 @implementation PhotoInfo
 
-- (instancetype)initWithId:(NSString *)identifier title:(NSString *)title detail:(NSString *)detail url:(NSURL *)url {
-    if ([identifier length] == 0) {
-        return nil;
-    }
+- (instancetype)initWithFlickrDictionary:(NSDictionary *)flickrDict {
     
     self = [super init];
     if (self) {
-        _identifier = identifier;
-        _title = (title != nil) ? title : @"";
-        _detail = (detail != nil) ? detail : @"";
-        _url = url;
+        _flickrDictionary = flickrDict;
+        
+        _identifier = [flickrDict valueForKeyPath:FLICKR_PHOTO_ID];
+        if ([_identifier length] == 0) {
+            return nil;
+        }
+        
+        _title = [flickrDict valueForKeyPath:FLICKR_PHOTO_TITLE];
+        if (!_title) {
+            _title = @"";
+        }
+        
+        _detail = [flickrDict valueForKeyPath:FLICKR_PHOTO_DESCRIPTION];
+        if (!_detail) {
+            _detail = @"";
+        }
+        
+        _url = [FlickrFetcher URLforPhoto:flickrDict format:FlickrPhotoFormatLarge];
     }
     return self;
+
+    
 }
 
 @end

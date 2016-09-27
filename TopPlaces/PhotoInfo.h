@@ -13,7 +13,8 @@
 @property (nonatomic, readonly) NSString *detail;
 @property (nonatomic, readonly) NSString *identifier;
 @property (nonatomic, readonly) NSURL *url;
+@property (nonatomic, readonly) NSDictionary *flickrDictionary; // to save in NSUserDefaults (should actually make PhotoInfo serializable...)
 
-- (instancetype)initWithId:(NSString *)identifier title:(NSString *)title detail:(NSString *)detail url:(NSURL *)url;
+- (instancetype)initWithFlickrDictionary:(NSDictionary *)dictionary;
 
 @end

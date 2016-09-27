@@ -66,7 +66,7 @@
     self.imageView.image = image;
     [self.imageView sizeToFit];
     self.scrollView.contentSize = self.image ? self.image.size : CGSizeZero;
-    [self.scrollView zoomToRect:CGRectMake(0, 0, self.scrollView.contentSize.width, self.scrollView.contentSize.height) animated:NO];
+    [self.scrollView zoomToRect:CGRectMake(0, 0, self.scrollView.contentSize.width, self.scrollView.contentSize.height) animated:NO]; //TODO: this should be more zoomed in?
 }
 
 - (void)setScrollView:(UIScrollView *)scrollView {

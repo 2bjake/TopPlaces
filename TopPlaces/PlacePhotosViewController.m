@@ -31,7 +31,11 @@
     [session downloadTaskWithRequest:request
                    completionHandler:^(NSURL * _Nullable localFile, NSURLResponse * _Nullable response, NSError * _Nullable error) {
                        if (!error) {
-                           NSArray *newPhotoInfos = [PlacePhotosViewController photoInfosFromFlickrData:[NSData dataWithContentsOfURL:localFile]];
+                           NSData *data = [NSData dataWithContentsOfURL:localFile];
+                           NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error: NULL];
+                           NSArray *photos = [dict valueForKeyPath:FLICKR_RESULTS_PHOTOS];
+                           
+                           NSArray *newPhotoInfos = [PhotosTableViewController photoInfosFromFlickrPhotoArray:photos];
 
                            dispatch_async(dispatch_get_main_queue(), ^{
                                [self setPhotoInfos:newPhotoInfos];
@@ -41,23 +45,6 @@
     [task resume];
 }
 
-+ (NSArray*) photoInfosFromFlickrData:(NSData *)data {
-    NSMutableArray *newPhotoInfos = [[NSMutableArray alloc] init];
-    
-    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error: NULL];
-    NSArray *photos = [dict valueForKeyPath:FLICKR_RESULTS_PHOTOS];
 
-    for (NSDictionary * photoDict in photos) {
-        NSString *identifier = [photoDict valueForKeyPath:FLICKR_PHOTO_ID];
-        NSString *title = [photoDict valueForKeyPath:FLICKR_PHOTO_TITLE];
-        NSString *detail = [photoDict valueForKeyPath:FLICKR_PHOTO_DESCRIPTION];
-        NSURL *url = [FlickrFetcher URLforPhoto:photoDict format:FlickrPhotoFormatLarge];
-        PhotoInfo *info = [[PhotoInfo alloc] initWithId:identifier title:title detail:detail url:url];
-        if (info) {
-            [newPhotoInfos addObject:info];
-        }
-    }
-    return newPhotoInfos;
-}
 
 @end
