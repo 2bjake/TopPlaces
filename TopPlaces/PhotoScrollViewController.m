@@ -8,7 +8,7 @@
 
 #import "PhotoScrollViewController.h"
 
-@interface PhotoScrollViewController () <UIScrollViewDelegate>
+@interface PhotoScrollViewController () <UIScrollViewDelegate, UISplitViewControllerDelegate>
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) UIImageView *imageView;
@@ -20,8 +20,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.splitViewController.delegate = self;
     [self.scrollView addSubview:self.imageView];
     self.scrollView.delegate = self;
+    if (self.photoUrl && !self.image) {
+        [self.spinner startAnimating];
+    }
+}
+
+-(BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController {
+    if (!self.photoUrl) {
+        return YES;
+    }
+    return NO;
 }
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
